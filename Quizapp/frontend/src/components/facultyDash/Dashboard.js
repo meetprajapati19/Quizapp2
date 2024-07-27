@@ -1,20 +1,21 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import './Dashboard.css';
 
-function Dashboard() {
-  const history = useHistory();
+const Dashboard = () => {
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    history.push('/login');
+    navigate('/login');
   };
 
   return (
-    <div>
+    <div className="dashboard">
       <h2>Dashboard</h2>
-      <button onClick={handleLogout}>Logout</button>
+      <button onClick={handleLogout} className="logout-button">Logout</button>
     </div>
   );
-}
+};
 
 export default Dashboard;
