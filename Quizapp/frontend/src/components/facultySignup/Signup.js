@@ -11,10 +11,11 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3000/api/faculty/signup', { username, password });
+      const response = await axios.post('http://localhost:3000/api/faculty/signup', { username, password });
+      console.log('Signup response:', response.data);
       navigate('/login');
     } catch (err) {
-      console.error(err);
+      console.error('Signup Error:', err.response || err.message);
       alert('Error signing up');
     }
   };

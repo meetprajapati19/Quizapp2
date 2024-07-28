@@ -11,6 +11,7 @@ import Signup from './components/facultySignup/Signup'
 import Dashboard from './components/facultyDash/Dashboard'
 
 
+
 function App() {
 
   const [token,setToken]=useState(null);
@@ -32,6 +33,7 @@ function App() {
           <Route path="/chapters" element={<Chapter />} />
           <Route path="/quiz" element={<QuizeContainer />} />
           <Route path="/login" element={<Login />} />
+          
           <Route path="/signup" element={<Signup />} />
           {token && <Route path="/dashboard" element={<Dashboard />} />}
           {!token && <Route path="/dashboard" element={<Signup />} />}

@@ -1,40 +1,28 @@
-require('dotenv').config();
+// server.js or app.js
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
-const bodyParser = require('body-parser');
-const facultyRoutes = require('./routes/Faculty'); // Ensure this path is correct
+const mongoose = require('mongoose');
+const facultyRoutes = require('./routes/Faculty');
+const quizRoutes = require('./routes/Quiz');
+const dotenv = require('dotenv');
+
+// Load environment variables from .env file
+dotenv.config();
 
 const app = express();
-
-const URL = process.env.URL;
 const PORT = process.env.PORT || 3000;
+const URL = process.env.MONGO_URI;
 
-if (!URL) {
-    console.error('MongoDB connection string (URL) is missing.');
-    process.exit(1);
-}
+app.use(cors());
+app.use(express.json());
 
-console.log('MongoDB URI:', URL);
+app.use('/api/faculty', facultyRoutes);
+app.use('/api/quiz', quizRoutes);
 
 mongoose.connect(URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => {
-    console.log("MongoDB Connected");
-})
-.catch((err) => {
-    console.error('Error connecting to MongoDB:', err.message);
-});
-
-// Middleware to parse incoming request bodies
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use('/api/faculty', facultyRoutes); // Ensure the route path is correct
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log('MongoDB Connected');
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}).catch(err => console.error('MongoDB connection error:', err));

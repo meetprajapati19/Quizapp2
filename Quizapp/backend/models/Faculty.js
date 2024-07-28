@@ -10,6 +10,10 @@ const FacultySchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  facultyId: {
+    type: Number,
+    unique: true
   }
 });
 
@@ -29,4 +33,3 @@ FacultySchema.methods.matchPassword = async function (enteredPassword) {
 };
 
 module.exports = mongoose.model('Faculty', FacultySchema);
- 
