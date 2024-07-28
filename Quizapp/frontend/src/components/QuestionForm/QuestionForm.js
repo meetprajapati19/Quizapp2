@@ -1,68 +1,80 @@
-// src/components/QuestionForm.js
 import React, { useState } from 'react';
-import './QuestionForm.css';
 
 const QuestionForm = ({ currentQuestionNumber, totalQuestions, onSubmit }) => {
   const [questionData, setQuestionData] = useState({
-    question: '',
-    option1: '',
-    option2: '',
-    option3: '',
-    option4: '',
+    questionText: '',
+    options: ['', '', '', ''],
     answer: '',
     marks: ''
   });
 
   const handleChange = (e) => {
-    setQuestionData({ ...questionData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setQuestionData({ ...questionData, [name]: value });
+  };
+
+  const handleOptionChange = (index, value) => {
+    const newOptions = [...questionData.options];
+    newOptions[index] = value;
+    setQuestionData({ ...questionData, options: newOptions });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(questionData);
     setQuestionData({
-      question: '',
-      option1: '',
-      option2: '',
-      option3: '',
-      option4: '',
+      questionText: '',
+      options: ['', '', '', ''],
       answer: '',
       marks: ''
     });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="question-form">
-      <h3>Question {currentQuestionNumber} of {totalQuestions}</h3>
-      <div className="input-group">
-        <label>Question:</label>
-        <input type="text" name="question" value={questionData.question} onChange={handleChange} required />
+    <form onSubmit={handleSubmit}>
+      <h3>Question {currentQuestionNumber} / {totalQuestions}</h3>
+      <div>
+        <label>Question Text:</label>
+        <input
+          type="text"
+          name="questionText"
+          value={questionData.questionText}
+          onChange={handleChange}
+          required
+        />
       </div>
-      <div className="input-group">
-        <label>Option 1:</label>
-        <input type="text" name="option1" value={questionData.option1} onChange={handleChange} required />
-      </div>
-      <div className="input-group">
-        <label>Option 2:</label>
-        <input type="text" name="option2" value={questionData.option2} onChange={handleChange} required />
-      </div>
-      <div className="input-group">
-        <label>Option 3:</label>
-        <input type="text" name="option3" value={questionData.option3} onChange={handleChange} required />
-      </div>
-      <div className="input-group">
-        <label>Option 4:</label>
-        <input type="text" name="option4" value={questionData.option4} onChange={handleChange} required />
-      </div>
-      <div className="input-group">
+      {questionData.options.map((option, index) => (
+        <div key={index}>
+          <label>Option {index + 1}:</label>
+          <input
+            type="text"
+            value={option}
+            onChange={(e) => handleOptionChange(index, e.target.value)}
+            required
+          />
+        </div>
+      ))}
+      <div>
         <label>Answer:</label>
-        <input type="text" name="answer" value={questionData.answer} onChange={handleChange} required />
+        <input
+          type="text"
+          name="answer"
+          value={questionData.answer}
+          onChange={handleChange}
+          required
+        />
       </div>
-      <div className="input-group">
+      <div>
         <label>Marks:</label>
-        <input type="number" name="marks" value={questionData.marks} onChange={handleChange} required />
+        <input
+          type="number"
+          name="marks"
+          value={questionData.marks}
+          onChange={handleChange}
+          required
+        />
       </div>
-      <button type="submit" className="submit-button">Next</button>
+      <button type="submit">Next</button>
     </form>
   );
 };

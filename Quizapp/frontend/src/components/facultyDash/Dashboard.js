@@ -1,8 +1,8 @@
-// src/components/Dashboard.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuizForm from '../QuizForm/QuizForm';
 import QuestionForm from '../QuestionForm/QuestionForm';
+import axios from 'axios';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -18,34 +18,44 @@ const Dashboard = () => {
     navigate('/login');
   };
 
-  const handleQuizSubmit = (quizData) => {
-    setQuizInfo(quizData);
-    setQuestions(Array.from({ length: quizData.numberOfQuestions }, () => ({
-      question: '',
-      option1: '',
-      option2: '',
-      option3: '',
-      option4: '',
-      answer: '',
-      marks: ''
-    })));
-    setShowQuizForm(false);
-    setShowQuestionForm(true);
+  const handleQuizSubmit = async (quizData) => {
+    try {
+      const response = await axios.post('http://localhost:3000/api/quiz/create', quizData);
+      setQuizInfo({ ...quizData, _id: response.data.quizId });
+      setQuestions(Array.from({ length: quizData.numberOfQuestions }, () => ({
+        questionText: '',
+        options: ['', '', '', ''],
+        answer: '',
+        marks: ''
+      })));
+      setShowQuizForm(false);
+      setShowQuestionForm(true);
+    } catch (err) {
+      console.error('Error creating quiz:', err);
+    }
   };
 
-  const handleQuestionSubmit = (questionData) => {
+  const handleQuestionSubmit = async (questionData) => {
     const updatedQuestions = [...questions];
     updatedQuestions[currentQuestionNumber - 1] = questionData;
     setQuestions(updatedQuestions);
+
     if (currentQuestionNumber < quizInfo.numberOfQuestions) {
       setCurrentQuestionNumber(currentQuestionNumber + 1);
     } else {
-      console.log(quizInfo);
-      console.log(questions);
-      setShowQuestionForm(false);
-      setCurrentQuestionNumber(1);
-      setQuizInfo(null);
-      setQuestions([]);
+      try {
+        await axios.post('http://localhost:3000/api/quiz/create/questions', {
+          quizId: quizInfo._id,
+          questions: updatedQuestions
+        });
+        console.log('Quiz and questions created successfully');
+        setShowQuestionForm(false);
+        setCurrentQuestionNumber(1);
+        setQuizInfo(null);
+        setQuestions([]);
+      } catch (err) {
+        console.error('Error creating questions:', err);
+      }
     }
   };
 
