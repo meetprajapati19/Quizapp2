@@ -1,8 +1,8 @@
-// models/Faculty.js
+// models/Student.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const FacultySchema = new mongoose.Schema({
+const studentSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
@@ -11,15 +11,11 @@ const FacultySchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
-  },
-  facultyId: {
-    type: Number,
-    unique: true
   }
 });
 
 // Hash password before saving
-FacultySchema.pre('save', async function (next) {
+studentSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     return next();
   }
@@ -29,8 +25,8 @@ FacultySchema.pre('save', async function (next) {
 });
 
 // Match password method
-FacultySchema.methods.matchPassword = async function (enteredPassword) {
+studentSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-module.exports = mongoose.model('Faculty', FacultySchema);
+module.exports = mongoose.model('Student', studentSchema);

@@ -11,12 +11,14 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:3000/api/faculty/login', { username, password });
-      localStorage.setItem('token', res.data.token);
+      const response = await axios.post('http://localhost:3000/api/faculty/login', { username, password });
+      console.log('Login response:', response.data);
+      // Store token and navigate to dashboard or home page
+      localStorage.setItem('token', response.data.token);
       navigate('/dashboard');
     } catch (err) {
-      console.error(err);
-      alert('Invalid credentials');
+      console.error('Login Error:', err.response || err.message);
+      alert('Error logging in');
     }
   };
 

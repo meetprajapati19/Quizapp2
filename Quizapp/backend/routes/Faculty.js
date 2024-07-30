@@ -1,6 +1,8 @@
+// routes/auth.js
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const Faculty = require('../models/Faculty');
+const Student = require('../models/Student');
 const router = express.Router();
 
 router.post('/signup', async (req, res) => {
@@ -12,17 +14,28 @@ router.post('/signup', async (req, res) => {
     if (existingFaculty) {
       return res.status(400).json({ error: 'Username already exists' });
     }
+    const existingStudent = await Student.findOne({ username });
+    if (existingStudent) {
+      return res.status(400).json({ error: 'Username already exists' });
+    }
 
-    // Get the number of documents in the collection
-    const count = await Faculty.countDocuments();
-    const facultyId = count + 1;
+    if (username.endsWith('@charusat.ac.in')) {
+      const count = await Faculty.countDocuments();
+      const facultyId = count + 1;
 
-    // Create new faculty
-    const faculty = new Faculty({ username, password, facultyId });
-    await faculty.save();
-    console.log('Faculty registered:', faculty);
+      // Create new faculty
+      const faculty = new Faculty({ username, password, facultyId });
+      await faculty.save();
+      console.log('Faculty registered:', faculty);
 
-    res.status(201).json({ message: 'Faculty registered', facultyId: faculty.facultyId });
+      res.status(201).json({ message: 'Faculty registered', facultyId: faculty.facultyId });
+    } else if (username.endsWith('@charusat.edu.in')) {
+      const student = new Student({ username, password });
+      await student.save();
+      res.status(201).json({ message: 'Student registered successfully' });
+    } else {
+      res.status(400).json({ error: 'Invalid email domain' });
+    }
   } catch (err) {
     console.error('Signup Error:', err);
     res.status(500).json({ error: 'Error signing up' });
@@ -33,11 +46,19 @@ router.post('/login', async (req, res) => {
   const { username, password } = req.body;
   console.log("Login attempt with username:", username, "and password:", password);
   try {
-    const faculty = await Faculty.findOne({ username });
-    console.log('Found faculty:', faculty);
+    let user;
+    if (username.endsWith('@charusat.ac.in')) {
+      user = await Faculty.findOne({ username });
+    } else if (username.endsWith('@charusat.edu.in')) {
+      user = await Student.findOne({ username });
+    } else {
+      return res.status(400).json({ error: 'Invalid email domain' });
+    }
+    console.log(await user.matchPassword(password));
 
-    if (faculty && await faculty.matchPassword(password)) {
-      const token = jwt.sign({ id: faculty._id, facultyId: faculty.facultyId }, 'secret', { expiresIn: '1Y' });
+
+    if (user && await user.matchPassword(password)) {
+      const token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1Y' });
       res.json({ token });
     } else {
       res.status(401).json({ error: 'Invalid credentials' });
