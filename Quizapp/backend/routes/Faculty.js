@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post('/signup', async (req, res) => {
   const { username, password } = req.body;
+  console.log(req.body);
   console.log("Received data for signup:", username, password);
   try {
     // Check if username already exists
@@ -58,7 +59,8 @@ router.post('/login', async (req, res) => {
 
 
     if (user && await user.matchPassword(password)) {
-      const token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1Y' });
+      const data = { id: user._id, role: user.role }
+      const token = jwt.sign(data, 'secret', { expiresIn: '1Y' });
       res.json({ token });
     } else {
       res.status(401).json({ error: 'Invalid credentials' });

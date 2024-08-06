@@ -15,7 +15,11 @@ const FacultySchema = new mongoose.Schema({
   facultyId: {
     type: Number,
     unique: true
-  }
+  },
+  role: {
+    type: String,
+    default: "faculty",
+  },
 });
 
 // Hash password before saving

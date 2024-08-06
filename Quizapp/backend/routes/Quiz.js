@@ -2,10 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Quiz = require('../models/Quiz');
 const Question = require('../models/Question');
+const { restricTo } = require('../middlewares/auth');
 const router = express.Router();
 
 // Create a new quiz
-router.post('/create', async (req, res) => {
+router.post('/create',restricTo('faculty'), async (req, res) => {
   try {
     console.log("Received request to create quiz with data:", req.body);
 
