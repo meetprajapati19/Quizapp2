@@ -15,6 +15,7 @@ const Login = () => {
       console.log('Login response:', response.data);
       // Store token and navigate to dashboard or home page
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('role', response.data.role);
       navigate('/dashboard');
     } catch (err) {
       console.error('Login Error:', err.response || err.message);

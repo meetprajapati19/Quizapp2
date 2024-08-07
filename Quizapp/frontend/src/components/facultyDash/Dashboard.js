@@ -12,6 +12,7 @@ const Dashboard = () => {
   const [quizInfo, setQuizInfo] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
+  const role = localStorage.getItem("role");
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -63,7 +64,10 @@ const Dashboard = () => {
     <div className="dashboard">
       <h2>Dashboard</h2>
       <button onClick={handleLogout} className="logout-button">Logout</button>
-      <button onClick={() => setShowQuizForm(true)} className="create-quiz-button">Create Quiz</button>
+      
+      {role === 'faculty' ?
+        (<button onClick={() => setShowQuizForm(true)} className="create-quiz-button">Create Quiz</button>)
+       : ""}
       {showQuizForm && <QuizForm onSubmit={handleQuizSubmit} />}
       {showQuestionForm && (
         <QuestionForm
