@@ -31,7 +31,7 @@ const studentOnly = (req, res, next) => {
 
 function restricTo(role){
   return function(req,res,next){
-    // console.log(req.role);
+    console.log(req.role);
   if(!req.user.id || !req.user.role){
     return res.status(403).json({ error: 'Forbidden' });
   }

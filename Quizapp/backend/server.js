@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/faculty', facultyRoutes);
-app.use('/api/student', quizRoutes);
+app.use('/api/quiz', quizRoutes);
 
 mongoose.connect(URL, {
   useNewUrlParser: true,

@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Login from "./components/facultyLogin/Login";
 import Signup from "./components/facultySignup/Signup";
 import Dashboard from "./components/facultyDash/Dashboard";
 import StudentDashboard from "./components/students/StudentDashboard/StudentDashboard";
+import QuizForm from "./components/QuizForm/QuizForm";
+import QuestionForm from "./components/QuestionForm/QuestionForm";
+
 
 function App() {
   // const [token, setToken] = useState(null);
@@ -21,6 +24,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/api/student" element={<StudentDashboard />} />
+        <Route path="/create" element={<QuizForm />} />
+        <Route path="/create/questions" element={<QuestionForm />} />
         {/* {token ? ( */}
           <Route path="/dashboard" element={<Dashboard />} />
         {/* ) : ( */}

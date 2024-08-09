@@ -7,6 +7,7 @@ import './Dashboard.css';
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [quizId,setquizId] = useState(null)
   const [showQuizForm, setShowQuizForm] = useState(false);
   const [showQuestionForm, setShowQuestionForm] = useState(false);
   const [quizInfo, setQuizInfo] = useState(null);
@@ -19,26 +20,24 @@ const Dashboard = () => {
     navigate('/login');
   };
 
-  const handleQuizSubmit = async (quizData) => {
-    try {
-      const response = await axios.post('http://localhost:3000/api/quiz/create', quizData);
-      setQuizInfo({ ...quizData, _id: response.data.quizId });
-      setQuestions(Array.from({ length: quizData.numberOfQuestions }, () => ({
-        questionText: '',
-        options: ['', '', '', ''],
-        answer: '',
-        marks: ''
-      })));
-      setShowQuizForm(false);
-      setShowQuestionForm(true);
-    } catch (err) {
-      console.error('Error creating quiz:', err);
-    }
+  const handleQuizSubmit = (quizData) => {
+    setquizId(quizData._id);
+    console.log(quizData);
+    setQuizInfo({ ...quizData, _id: quizData.quizId });
+    setQuestions(Array.from({ length: quizData.numberOfQuestions }, () => ({
+      questionText: '',
+      options: ['', '', '', ''],
+      answer: '',
+      marks: ''
+    })));
+    setShowQuizForm(false);
+    setShowQuestionForm(true);
   };
 
   const handleQuestionSubmit = async (questionData) => {
+    console.log("omish:" + questionData);
     const updatedQuestions = [...questions];
-    updatedQuestions[currentQuestionNumber - 1] = questionData;
+    updatedQuestions[currentQuestionNumber - 1] = questionData; 
     setQuestions(updatedQuestions);
 
     if (currentQuestionNumber < quizInfo.numberOfQuestions) {
@@ -46,7 +45,7 @@ const Dashboard = () => {
     } else {
       try {
         await axios.post('http://localhost:3000/api/quiz/create/questions', {
-          quizId: quizInfo._id,
+          quizId: quizId,
           questions: updatedQuestions
         });
         console.log('Quiz and questions created successfully');
@@ -65,10 +64,11 @@ const Dashboard = () => {
       <h2>Dashboard</h2>
       <button onClick={handleLogout} className="logout-button">Logout</button>
       
-      {role === 'faculty' ?
-        (<button onClick={() => setShowQuizForm(true)} className="create-quiz-button">Create Quiz</button>)
-       : ""}
+      {role === 'faculty' && (
+        <button onClick={() => setShowQuizForm(true)} className="create-quiz-button">Create Quiz</button>
+      )}
       {showQuizForm && <QuizForm onSubmit={handleQuizSubmit} />}
+      
       {showQuestionForm && (
         <QuestionForm
           currentQuestionNumber={currentQuestionNumber}

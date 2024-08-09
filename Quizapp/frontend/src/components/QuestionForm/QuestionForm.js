@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './QuestionForm.css';
 
 const QuestionForm = ({ currentQuestionNumber, totalQuestions, onSubmit }) => {
   const [questionData, setQuestionData] = useState({
@@ -31,9 +32,10 @@ const QuestionForm = ({ currentQuestionNumber, totalQuestions, onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="question-form">
       <h3>Question {currentQuestionNumber} / {totalQuestions}</h3>
-      <div>
+      {console.log(currentQuestionNumber+totalQuestions)}
+      <div className="input-group">
         <label>Question Text:</label>
         <input
           type="text"
@@ -44,7 +46,7 @@ const QuestionForm = ({ currentQuestionNumber, totalQuestions, onSubmit }) => {
         />
       </div>
       {questionData.options.map((option, index) => (
-        <div key={index}>
+        <div className="input-group" key={index}>
           <label>Option {index + 1}:</label>
           <input
             type="text"
@@ -54,7 +56,7 @@ const QuestionForm = ({ currentQuestionNumber, totalQuestions, onSubmit }) => {
           />
         </div>
       ))}
-      <div>
+      <div className="input-group">
         <label>Answer:</label>
         <input
           type="text"
@@ -64,7 +66,7 @@ const QuestionForm = ({ currentQuestionNumber, totalQuestions, onSubmit }) => {
           required
         />
       </div>
-      <div>
+      <div className="input-group">
         <label>Marks:</label>
         <input
           type="number"
@@ -74,7 +76,7 @@ const QuestionForm = ({ currentQuestionNumber, totalQuestions, onSubmit }) => {
           required
         />
       </div>
-      <button type="submit">Next</button>
+      <button type="submit" className="submit-button">Next</button>
     </form>
   );
 };

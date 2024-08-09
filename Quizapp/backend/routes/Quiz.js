@@ -8,7 +8,7 @@ const { createQuestion } = require('../controller/Createquestion');
 const router = express.Router();
 
 
-router.post('/create',restricTo('faculty'),createQuiz );
+router.post('/create',createQuiz );
 
 
 router.post('/create/questions',createQuestion );
