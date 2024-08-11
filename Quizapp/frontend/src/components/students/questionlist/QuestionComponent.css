@@ -1,0 +1,20 @@
+.question-component {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+  
+  .question-text {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .options {
+    margin-bottom: 20px;
+  }
+  
+  .navigation-buttons button {
+    margin-right: 10px;
+  }
+  

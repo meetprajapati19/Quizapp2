@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const facultyRoutes = require('./routes/Faculty');
 const quizRoutes = require('./routes/Quiz');
+const studentRoutes = require('./routes/Student');
 const dotenv = require('dotenv');
 
 // Load environment variables from .env file
@@ -18,6 +19,8 @@ app.use(express.json());
 
 app.use('/api/faculty', facultyRoutes);
 app.use('/api/quiz', quizRoutes);
+console.log("go");
+app.use('/api/student',studentRoutes );
 
 mongoose.connect(URL, {
   useNewUrlParser: true,

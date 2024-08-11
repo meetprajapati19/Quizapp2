@@ -24,7 +24,7 @@ async function handleLogin(req,res)
       
       
           if (user && await user.matchPassword(password)) {
-            const data = { id: user._id, role: user.role }
+            const data = { id: user.username, role: user.role }
             console.log(data);
             const token = jwt.sign(data, 'secret', { expiresIn: '1Y' });
             res.json({ token, role:user.role });

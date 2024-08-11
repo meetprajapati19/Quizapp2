@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import QuizForm from '../QuizForm/QuizForm';
 import QuestionForm from '../QuestionForm/QuestionForm';
 import axios from 'axios';
+
 import './Dashboard.css';
 
 const Dashboard = () => {
+  
   const navigate = useNavigate();
   const [quizId,setquizId] = useState(null)
   const [showQuizForm, setShowQuizForm] = useState(false);
@@ -35,7 +37,7 @@ const Dashboard = () => {
   };
 
   const handleQuestionSubmit = async (questionData) => {
-    console.log("omish:" + questionData);
+    
     const updatedQuestions = [...questions];
     updatedQuestions[currentQuestionNumber - 1] = questionData; 
     setQuestions(updatedQuestions);

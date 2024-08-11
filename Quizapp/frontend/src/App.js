@@ -7,6 +7,7 @@ import Dashboard from "./components/facultyDash/Dashboard";
 import StudentDashboard from "./components/students/StudentDashboard/StudentDashboard";
 import QuizForm from "./components/QuizForm/QuizForm";
 import QuestionForm from "./components/QuestionForm/QuestionForm";
+import QuestionComponent from "./components/students/questionlist/QuestionComponent";
 
 
 function App() {
@@ -23,7 +24,9 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/api/student" element={<StudentDashboard />} />
+        <Route path="/studentdash" element={<StudentDashboard />} />
+        <Route path="/studentdash/:subject" element={<StudentDashboard />} />
+        <Route path="/studentdash/:subject/:chapter/questions" element={<QuestionComponent />} />
         <Route path="/create" element={<QuizForm />} />
         <Route path="/create/questions" element={<QuestionForm />} />
         {/* {token ? ( */}
