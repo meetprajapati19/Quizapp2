@@ -1,22 +1,24 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./App.css";
-import Login from "./components/facultyLogin/Login";
-import Signup from "./components/facultySignup/Signup";
-import Dashboard from "./components/facultyDash/Dashboard";
-import StudentDashboard from "./components/students/StudentDashboard/StudentDashboard";
-import QuizForm from "./components/QuizForm/QuizForm";
-import QuestionForm from "./components/QuestionForm/QuestionForm";
-import QuestionComponent from "./components/students/questionlist/QuestionComponent";
-
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
+import Login from './components/facultyLogin/Login';
+import Signup from './components/facultySignup/Signup';
+import Dashboard from './components/facultyDash/Dashboard';
+import StudentDashboard from './components/students/StudentDashboard/StudentDashboard';
+import QuizForm from './components/QuizForm/QuizForm';
+import QuestionForm from './components/QuestionForm/QuestionForm';
+import QuestionComponent from './components/students/questionlist/QuestionComponent';
+import ProtectedRoute from './components/protectRoute/protectRoute';
+import FacultyChapter from './components/facultyChapter/FacultyChapter';
+import Results from './components/studentResult/StudentResult';
 
 function App() {
-  // const [token, setToken] = useState(null);
+  const [role, setRole] = useState(null);
 
-  // useEffect(() => {
-  //   const t = localStorage.getItem("token");
-  //   setToken(t);
-  // }, []);
+  useEffect(() => {
+    const storedRole = localStorage.getItem('role');
+    setRole(storedRole);
+  }, []);
 
   return (
     <Router>
@@ -24,16 +26,74 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/studentdash" element={<StudentDashboard />} />
-        <Route path="/studentdash/:subject" element={<StudentDashboard />} />
-        <Route path="/studentdash/:subject/:chapter/questions" element={<QuestionComponent />} />
-        <Route path="/create" element={<QuizForm />} />
-        <Route path="/create/questions" element={<QuestionForm />} />
-        {/* {token ? ( */}
-          <Route path="/dashboard" element={<Dashboard />} />
-        {/* ) : ( */}
-          <Route path="/dashboard" element={<Signup />} />
-        {/* )} */}
+
+      
+        <Route
+          path="/studentdash"
+          element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <StudentDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/studentdash/:subject"
+          element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <StudentDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/studentdash/:subject/:chapter/questions"
+          element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <QuestionComponent />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['faculty']}>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/:subject/chapters"
+          element={
+            <ProtectedRoute allowedRoles={['faculty']}>
+              <FacultyChapter />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/:subject/:chapter/answer"
+          element={
+            <ProtectedRoute allowedRoles={['faculty']}>
+              <Results />
+            </ProtectedRoute>
+          }
+        />
+       
+        <Route
+          path="/create"
+          element={
+            <ProtectedRoute allowedRoles={['faculty']}>
+              <QuizForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create/questions"
+          element={
+            <ProtectedRoute allowedRoles={['faculty']}>
+              <QuestionForm />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );

@@ -6,6 +6,7 @@ import './Login.css';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [role,setRole] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -16,7 +17,15 @@ const Login = () => {
       // Store token and navigate to dashboard or home page
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('role', response.data.role);
-      navigate('/dashboard');
+      setRole(response.data.role);
+      if (role==='student') {
+        
+        navigate('/studentdash');
+      }
+      else if (role==='faculty'){
+        navigate('/dashboard');
+      }
+
     } catch (err) {
       console.error('Login Error:', err.response || err.message);
       alert('Error logging in');

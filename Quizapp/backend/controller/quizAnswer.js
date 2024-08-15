@@ -37,7 +37,7 @@ async function submitQuiz(req, res) {
       };
     }));
 
-    // Save to the database
+    
     const quizAnswer = new QuizAnswer({
       username,
       subject,

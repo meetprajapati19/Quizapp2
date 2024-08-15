@@ -6,6 +6,7 @@ const { getQuestions } = require('../controller/getQuestions');
 const { submitQuiz } = require('../controller/quizAnswer');
 const { authMiddleware } = require('../middlewares/auth');
 
+
 const router = express.Router();
 
 
@@ -13,7 +14,7 @@ const router = express.Router();
 router.get('/subjects', getSubjects);
 
 router.get('/:subjects/chapters', getChaptersBySubject);
-router.get('/:subjects/:chapter/questions',getQuestions );
+router.get('/:subject/:chapter/questions',authMiddleware,getQuestions );
 router.post('/submit',authMiddleware,submitQuiz)
 
 

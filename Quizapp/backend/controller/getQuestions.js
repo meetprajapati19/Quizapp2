@@ -1,13 +1,22 @@
 const Quiz = require('../models/Quiz');
 const Question = require('../models/Question');
+const { checkQuizSubmission } = require('./checkQuizSubmission');
 
 async function getQuestions(req, res) {
-  const { subjects, chapter } = req.params;
+  const { subject, chapter } = req.params;
   console.log(req.params);
+  const username = req.user.id; 
 
   try {
+    const alreadySubmitted = await checkQuizSubmission(subject, chapter, username);
+    console.log(alreadySubmitted);
+
+    if (alreadySubmitted) {
+      return res.status(400).json({ message: 'Already submitted a response for this quiz.' });
+    }
+
     // Find the quiz based on subject and chapter
-    const quiz = await Quiz.findOne({ subject: subjects, chapter: chapter });
+    const quiz = await Quiz.findOne({ subject: subject, chapter: chapter });
     console.log(quiz);
 
     if (!quiz) {

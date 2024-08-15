@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuizForm from '../QuizForm/QuizForm';
 import QuestionForm from '../QuestionForm/QuestionForm';
 import axios from 'axios';
+import {jwtDecode} from 'jwt-decode';
+
+
 
 import './Dashboard.css';
+import FacultySubject from '../facultySubject/FacultySubject';
 
 const Dashboard = () => {
+
+
+  const [facultyId, setFacultyId] = useState(null);
+  const [username, setUserName] = useState('');
   
   const navigate = useNavigate();
   const [quizId,setquizId] = useState(null)
@@ -16,6 +24,34 @@ const Dashboard = () => {
   const [questions, setQuestions] = useState([]);
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
   const role = localStorage.getItem("role");
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decoded = jwtDecode(token);
+      setUserName(decoded.id); 
+    }
+  }, []);
+  // console.log(username);
+
+  useEffect(() => {
+    if (username) {
+      const fetchFacultyId = async () => {
+        try {
+          const response = await axios.get('http://localhost:3000/api/faculty/getFacultyId', {
+            params: { username }
+          });
+          // console.log(response);
+          setFacultyId(response.data.facultyId);
+        } catch (err) {
+          console.error('Error fetching faculty ID:', err);
+        }
+      };
+      fetchFacultyId();
+    }
+  }, [username]);
+
+ 
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -64,7 +100,9 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <h2>Dashboard</h2>
+      <h5>your faculty id :{facultyId}</h5>
       <button onClick={handleLogout} className="logout-button">Logout</button>
+      <FacultySubject/>
       
       {role === 'faculty' && (
         <button onClick={() => setShowQuizForm(true)} className="create-quiz-button">Create Quiz</button>
