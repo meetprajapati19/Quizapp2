@@ -22,6 +22,11 @@ const quizSchema = new mongoose.Schema({
   numberOfQuestions: {
     type: Number,
     required: true,
+  },
+  isActive: {
+    type: Boolean,
+    required: true,
+    default:false,
   }
 });
 

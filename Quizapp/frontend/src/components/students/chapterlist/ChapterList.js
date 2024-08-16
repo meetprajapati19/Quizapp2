@@ -8,17 +8,33 @@ const ChapterList = ({ subject, chapters }) => {
   
   const handleChapterClick = async (chapter) => {
     try {
-      navigate(`/studentdash/${subject}/${chapter}/questions`);
-      const response = await axios.get(`http://localhost:3000/api/student/${subject}/${chapter}/questions`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } // Replace with actual token retrieval
+      // Check if the quiz is active for the selected chapter
+      const response1 = await axios.get(`http://localhost:3000/api/faculty/${subject}/${chapter}/isactive`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
-      // console.log(response.status);
+      // console.log(req.user.id);
+
+      const  isActive  = response1.data;
+    
       
-      // if (response.status === 200) {
-      // }
+      
+      if (!isActive) {
+        alert('This quiz is not currently active.');
+        return;
+      }
+
+      // Navigate to the questions page if the quiz is active
+      navigate(`/studentdash/${subject}/${chapter}/questions`);
+      
+      // You might want to keep the below API call to fetch questions here, but it's not necessary to do it twice.
+      const response = await axios.get(`http://localhost:3000/api/student/${subject}/${chapter}/questions`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+      
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        alert('You have already submitted the quiz for this chapter.');
+        navigate(`/studentdash/${subject}/${chapter}/results`);
+      
       } else {
         console.error('Error checking quiz submission', error);
         alert('An error occurred while checking the quiz submission.');

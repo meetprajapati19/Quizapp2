@@ -5,21 +5,36 @@ import './QuestionComponent.css';
 
 const QuestionComponent = () => {
   const token = localStorage.getItem('token');
-    
-
   const { subject, chapter } = useParams();
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
+  const [isActive, setIsActive] = useState(null); // For tracking the quiz's active status
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/api/student/${subject}/${chapter}/questions`,{ headers: {
-      Authorization: `Bearer ${token}`,
-    },})
-      .then(response => setQuestions(response.data))
-      .catch(error => console.error('Error fetching questions:', error));
-  }, [subject, chapter]);
+    const fetchQuizData = async () => {
+      try {
+        // Fetching the questions
+        const questionsResponse = await axios.get(
+          `http://localhost:3000/api/student/${subject}/${chapter}/questions`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setQuestions(questionsResponse.data);
+
+        // Fetching the isActive status
+        const statusResponse = await axios.get(
+          `http://localhost:3000/api/faculty/${subject}/${chapter}/isactive`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setIsActive(statusResponse.data);
+      } catch (error) {
+        console.error('Error fetching quiz data:', error);
+      }
+    };
+
+    fetchQuizData();
+  }, [subject, chapter, token]);
 
   const handleAnswerChange = (e) => {
     setAnswers({
@@ -43,26 +58,45 @@ const QuestionComponent = () => {
     }
   };
 
-  const handleSubmit = () => {
-    // Send the answers to the backend
-    axios.post('http://localhost:3000/api/student/submit', {
-      subject,
-      chapter,
-      answers: Object.values(answers),
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then(response => {
-      console.log('Quiz submitted:', response.data);
-      navigate('/studentdash');
-    })
-    .catch(error => console.error('Error submitting quiz:', error));
+   const handleSubmit = async () => {
+    const statusResponse = await axios.get(
+      `http://localhost:3000/api/faculty/${subject}/${chapter}/isactive`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    // setIsActive(statusResponse.data);
+    // console.log(statusResponse.data);
+    // console.log(isActive);
+    if (!(statusResponse.data)) {
+      alert('Time is over. You can no longer submit the quiz.');
+      return;
+    }
+    else
+    {
+
+      axios.post(
+        'http://localhost:3000/api/student/submit',
+        {
+          subject,
+          chapter,
+          answers: Object.values(answers),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then(response => {
+        console.log('Quiz submitted:', response.data);
+        navigate('/studentdash');
+      })
+      .catch(error => console.error('Error submitting quiz:', error));
+    }
+
   };
 
-  if (!questions.length) {
-    return <div>Loading questions...</div>;
+  if (isActive === null || !questions.length) {
+    return <div>Loading questions...</div>; // Show loading until data is fetched
   }
 
   return (
@@ -90,9 +124,12 @@ const QuestionComponent = () => {
         {currentQuestionIndex < questions.length - 1 ? (
           <button onClick={handleNext}>Next</button>
         ) : (
-          <button onClick={handleSubmit}>Submit</button>
+          <button onClick={handleSubmit} disabled={!isActive}>
+            Submit
+          </button>
         )}
       </div>
+      {!isActive && <div className="inactive-message">Quiz submission is currently disabled.</div>}
     </div>
   );
 };

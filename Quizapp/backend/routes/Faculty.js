@@ -9,6 +9,8 @@ const { getFacultyId } = require('../controller/GetfacultyId');
 const { getFacultySubject } = require('../controller/getFacultySubjects');
 const { getFacultyChapter } = require('../controller/getFacultyChapter');
 const { getResult } = require('../controller/getResult');
+const { getToggleResult } = require('../controller/getToggleResult');
+const { patchForToggle } = require('../controller/patchForToggle');
 const router = express.Router();
 
 
@@ -19,6 +21,8 @@ router.get('/getFacultyId',getFacultyId);
 router.get('/subjects',authMiddleware,getFacultySubject);
 router.get('/:subjects/chapters',authMiddleware,getFacultyChapter);
 router.get('/:subjects/:chapters/answer',authMiddleware,getResult);
+router.get('/:subjects/:chapters/isactive',authMiddleware,getToggleResult);
+router.patch('/:subjects/:chapters/isactive',authMiddleware,patchForToggle);
 
 
 module.exports = router;

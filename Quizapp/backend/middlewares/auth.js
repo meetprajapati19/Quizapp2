@@ -40,6 +40,7 @@ const authMiddleware = async (req, res, next) => {
       // Attach facultyId and username to the request object
       req.facultyId = faculty.facultyId;
     }
+   
       
       
       

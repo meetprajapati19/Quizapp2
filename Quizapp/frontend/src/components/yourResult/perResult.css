@@ -1,0 +1,30 @@
+.results-component {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .results-component h3 {
+    text-align: center;
+  }
+  
+  .results-component p {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+  
+  .results-component ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .results-component li {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Login from './components/facultyLogin/Login';
@@ -11,14 +11,18 @@ import QuestionComponent from './components/students/questionlist/QuestionCompon
 import ProtectedRoute from './components/protectRoute/protectRoute';
 import FacultyChapter from './components/facultyChapter/FacultyChapter';
 import Results from './components/studentResult/StudentResult';
+import PerResult from './components/yourResult/perResult';
 
 function App() {
-  const [role, setRole] = useState(null);
+  // const [role, setRole] = useState(null)
+  // const[isActive,setIsActive]=useState(0)
 
-  useEffect(() => {
-    const storedRole = localStorage.getItem('role');
-    setRole(storedRole);
-  }, []);
+  // useEffect(() => {
+  //   const storedRole = localStorage.getItem('role');
+
+    
+  //   setRole(storedRole);
+  // }, []);
 
   return (
     <Router>
@@ -49,6 +53,14 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={['student']}>
               <QuestionComponent />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/studentdash/:subject/:chapter/results"
+          element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <PerResult />
             </ProtectedRoute>
           }
         />
