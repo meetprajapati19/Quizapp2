@@ -1,23 +1,19 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuizForm from '../QuizForm/QuizForm';
 import QuestionForm from '../QuestionForm/QuestionForm';
 import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
 
-
-
 import './Dashboard.css';
 import FacultySubject from '../facultySubject/FacultySubject';
+import { FaSignOutAlt, FaPlusCircle, FaQuoteLeft } from 'react-icons/fa';
 
 const Dashboard = () => {
-
-
   const [facultyId, setFacultyId] = useState(null);
   const [username, setUserName] = useState('');
-  
   const navigate = useNavigate();
-  const [quizId,setquizId] = useState(null)
+  const [quizId, setQuizId] = useState(null);
   const [showQuizForm, setShowQuizForm] = useState(false);
   const [showQuestionForm, setShowQuestionForm] = useState(false);
   const [quizInfo, setQuizInfo] = useState(null);
@@ -29,10 +25,9 @@ const Dashboard = () => {
     const token = localStorage.getItem('token');
     if (token) {
       const decoded = jwtDecode(token);
-      setUserName(decoded.id); 
+      setUserName(decoded.id);
     }
   }, []);
-  // console.log(username);
 
   useEffect(() => {
     if (username) {
@@ -41,7 +36,6 @@ const Dashboard = () => {
           const response = await axios.get('http://localhost:3000/api/faculty/getFacultyId', {
             params: { username }
           });
-          // console.log(response);
           setFacultyId(response.data.facultyId);
         } catch (err) {
           console.error('Error fetching faculty ID:', err);
@@ -51,16 +45,13 @@ const Dashboard = () => {
     }
   }, [username]);
 
- 
-
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
   };
 
   const handleQuizSubmit = (quizData) => {
-    setquizId(quizData._id);
-    console.log(quizData);
+    setQuizId(quizData._id);
     setQuizInfo({ ...quizData, _id: quizData.quizId });
     setQuestions(Array.from({ length: quizData.numberOfQuestions }, () => ({
       questionText: '',
@@ -73,9 +64,8 @@ const Dashboard = () => {
   };
 
   const handleQuestionSubmit = async (questionData) => {
-    
     const updatedQuestions = [...questions];
-    updatedQuestions[currentQuestionNumber - 1] = questionData; 
+    updatedQuestions[currentQuestionNumber - 1] = questionData;
     setQuestions(updatedQuestions);
 
     if (currentQuestionNumber < quizInfo.numberOfQuestions) {
@@ -98,17 +88,28 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dashboard">
-      <h2>Dashboard</h2>
-      <h5>your faculty id :{facultyId}</h5>
-      <button onClick={handleLogout} className="logout-button">Logout</button>
-      <FacultySubject/>
-      
-      {role === 'faculty' && (
-        <button onClick={() => setShowQuizForm(true)} className="create-quiz-button">Create Quiz</button>
+    <div className="dashboard-container">
+      {!showQuizForm && !showQuestionForm && (
+        <>
+          <div className="dashboard-header">
+            <h2 className="dashboard-title">Dashboard</h2>
+            <h5 className="faculty-id">Your Faculty ID: {facultyId}</h5>
+            <button onClick={handleLogout} className="logout-button">
+              <FaSignOutAlt /> Logout
+            </button>
+          </div>
+
+          <div className="dashboard-content">
+            <FacultySubject />
+            {role === 'faculty' && (
+              <button onClick={() => setShowQuizForm(true)} className="create-quiz-button">
+                <FaPlusCircle /> Create Quiz
+              </button>
+            )}
+          </div>
+        </>
       )}
       {showQuizForm && <QuizForm onSubmit={handleQuizSubmit} />}
-      
       {showQuestionForm && (
         <QuestionForm
           currentQuestionNumber={currentQuestionNumber}
@@ -116,6 +117,13 @@ const Dashboard = () => {
           onSubmit={handleQuestionSubmit}
         />
       )}
+      <div className={`quote-section ${showQuizForm || showQuestionForm ? 'hidden' : ''}`}>
+        <FaQuoteLeft className="quote-icon" />
+        <p className="quote-text">
+          "Education is not the learning of facts, but the training of the mind to think."
+        </p>
+        <p className="quote-author">- Albert Einstein</p>
+      </div>
     </div>
   );
 };

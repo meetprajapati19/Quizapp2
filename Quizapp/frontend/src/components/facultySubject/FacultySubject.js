@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
+import './FacultySubject.css'; // Import the CSS file for styling
 
 const FacultySubject = () => {
   const [subjects, setSubjects] = useState([]);
-  const role = localStorage.getItem('role'); // No need to set role since it's not being updated
-  const navigate = useNavigate(); // Initialize navigate
+  const role = localStorage.getItem('role');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -30,15 +31,21 @@ const FacultySubject = () => {
   };
 
   return (
-    <div className="dashboard">
+    <div className="faculty-subjects">
       {role === 'faculty' && (
-        <div>
-          <h3>Your Subjects:</h3>
-          {subjects.map(subject => (
-            <button key={subject} onClick={() => handleSubjectClick(subject)}>
-              {subject}
-            </button> 
-          ))}
+        <div className="subjects-container">
+          <h3 className="subjects-title">Your Subjects:</h3>
+          <div className="subjects-list">
+            {subjects.map(subject => (
+              <button
+                key={subject}
+                className="subject-button"
+                onClick={() => handleSubjectClick(subject)}
+              >
+                {subject}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>

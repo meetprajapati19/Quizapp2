@@ -3,14 +3,15 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import SubjectList from '../subjectslist/SubjectList';
 import ChapterList from '../chapterlist/ChapterList';
-import './StudentDashboard.css';
 
+import './StudentDashboard.css';
 
 const StudentDashboard = () => {
   const [subjects, setSubjects] = useState([]);
   const [chapters, setChapters] = useState([]);
   const { subject } = useParams();
-  
+
+
 
 
   useEffect(() => {
@@ -30,7 +31,6 @@ const StudentDashboard = () => {
   return (
     <div className="student-dashboard">
       <h2>Student Dashboard</h2>
-      
       {subject ? (
         <ChapterList subject={subject} chapters={chapters} />
       ) : (

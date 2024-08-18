@@ -34,7 +34,6 @@ const QuestionForm = ({ currentQuestionNumber, totalQuestions, onSubmit }) => {
   return (
     <form onSubmit={handleSubmit} className="question-form">
       <h3>Question {currentQuestionNumber} / {totalQuestions}</h3>
-      {console.log(currentQuestionNumber+totalQuestions)}
       <div className="input-group">
         <label>Question Text:</label>
         <input
@@ -43,6 +42,7 @@ const QuestionForm = ({ currentQuestionNumber, totalQuestions, onSubmit }) => {
           value={questionData.questionText}
           onChange={handleChange}
           required
+          placeholder="Enter the question text here..."
         />
       </div>
       {questionData.options.map((option, index) => (
@@ -53,6 +53,7 @@ const QuestionForm = ({ currentQuestionNumber, totalQuestions, onSubmit }) => {
             value={option}
             onChange={(e) => handleOptionChange(index, e.target.value)}
             required
+            placeholder={`Enter option ${index + 1}...`}
           />
         </div>
       ))}
@@ -64,6 +65,7 @@ const QuestionForm = ({ currentQuestionNumber, totalQuestions, onSubmit }) => {
           value={questionData.answer}
           onChange={handleChange}
           required
+          placeholder="Enter the correct answer..."
         />
       </div>
       <div className="input-group">
@@ -74,6 +76,7 @@ const QuestionForm = ({ currentQuestionNumber, totalQuestions, onSubmit }) => {
           value={questionData.marks}
           onChange={handleChange}
           required
+          placeholder="Enter marks..."
         />
       </div>
       <button type="submit" className="submit-button">Next</button>

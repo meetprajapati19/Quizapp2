@@ -1,8 +1,9 @@
 /* src/components/QuestionForm.css */
 .question-form {
   text-align: left;
-  margin: 20px auto;
-  width: 100%;
+  margin:  0px;
+  padding: 0px;
+  width: 25vw;
   max-width: 400px;
   padding: 20px;
   border: 1px solid #ddd;

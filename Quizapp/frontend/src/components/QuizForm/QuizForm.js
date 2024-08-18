@@ -24,39 +24,40 @@ const QuizForm = ({ onSubmit }) => {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
-      // console.log(response.data);
       console.log("Quiz created:", response.data);
       onSubmit(response.data.quiz);  // Pass the entire response data including quizId
     } catch (error) {
       console.error('Error creating quiz:', error);
     }
-  }; 3
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="quiz-form">
-      <h3>Create Quiz</h3>
-      <div className="input-group">
-        <label>Faculty ID:</label>
-        <input type="text" name="facultyId" value={quizInfo.facultyId} onChange={handleChange} required />
-      </div>
-      <div className="input-group">
-        <label>Subject:</label>
-        <input type="text" name="subject" value={quizInfo.subject} onChange={handleChange} required />
-      </div>
-      <div className="input-group">
-        <label>Chapter:</label>
-        <input type="text" name="chapter" value={quizInfo.chapter} onChange={handleChange} required />
-      </div>
-      <div className="input-group">
-        <label>Total Marks:</label>
-        <input type="number" name="totalMarks" value={quizInfo.totalMarks} onChange={handleChange} required />
-      </div>
-      <div className="input-group">
-        <label>Number of Questions:</label>
-        <input type="number" name="numberOfQuestions" value={quizInfo.numberOfQuestions} onChange={handleChange} required />
-      </div>
-      <button type="submit" className="submit-button">Submit</button>
-    </form>
+    <div className="quiz-form-container">
+      <h3 className="form-title">Create Your Quiz</h3>
+      <form onSubmit={handleSubmit} className="quiz-form">
+        <div className="input-group">
+          <label htmlFor="facultyId">Faculty ID:</label>
+          <input type="text" id="facultyId" name="facultyId" value={quizInfo.facultyId} onChange={handleChange} required />
+        </div>
+        <div className="input-group">
+          <label htmlFor="subject">Subject:</label>
+          <input type="text" id="subject" name="subject" value={quizInfo.subject} onChange={handleChange} required />
+        </div>
+        <div className="input-group">
+          <label htmlFor="chapter">Chapter:</label>
+          <input type="text" id="chapter" name="chapter" value={quizInfo.chapter} onChange={handleChange} required />
+        </div>
+        <div className="input-group">
+          <label htmlFor="totalMarks">Total Marks:</label>
+          <input type="number" id="totalMarks" name="totalMarks" value={quizInfo.totalMarks} onChange={handleChange} required />
+        </div>
+        <div className="input-group">
+          <label htmlFor="numberOfQuestions">Number of Questions:</label>
+          <input type="number" id="numberOfQuestions" name="numberOfQuestions" value={quizInfo.numberOfQuestions} onChange={handleChange} required />
+        </div>
+        <button type="submit" className="submit-button">Submit</button>
+      </form>
+    </div>
   );
 };
 

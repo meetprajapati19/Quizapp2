@@ -1,19 +1,114 @@
-/* src/styles/Dashboard.css */
-.dashboard {
-  text-align: center;
+/* Base styles */
+.dashboard-container {
+  max-width: 1200px;
+  margin: auto;
   padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.logout-button, .create-quiz-button {
-  margin: 10px;
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.dashboard-title {
+  font-size: 28px;
+  color: #1a2e35;
+  font-weight: bold;
+}
+
+.faculty-id {
+  font-size: 18px;
+  color: #1cbbb4;
+}
+
+.logout-button {
+  background: #ff4f5a;
+  color: #ffffff;
   border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.3s ease;
 }
 
-.logout-button:hover, .create-quiz-button:hover {
-  background-color: #45a049;
+.logout-button:hover {
+  background: #e03a3a;
+}
+
+.create-quiz-button {
+  background: #1cbbb4;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.3s ease;
+}
+
+.create-quiz-button:hover {
+  background: #1a9a8e;
+}
+
+.dashboard-content {
+  display: flex;
+  height: auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.quote-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  font-style: italic;
+  color: #1a2e35;
+}
+
+.quote-icon {
+  font-size: 24px;
+  color: #1cbbb4;
+}
+
+.quote-text {
+  font-size: 20px;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.quote-author {
+  font-size: 18px;
+  color: #555;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-title {
+    font-size: 24px;
+  }
+
+  .faculty-id, .quote-text, .quote-author {
+    font-size: 16px;
+  }
+
+  .logout-button, .create-quiz-button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
 }

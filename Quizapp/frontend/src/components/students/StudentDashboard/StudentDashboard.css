@@ -1,37 +1,71 @@
+/* StudentDashboard.css */
 .student-dashboard {
+  background-color: #f9f9f9;
   padding: 20px;
+  border-radius: 12px;
+  max-width: 1200px;
+  margin: 20px auto;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.6s ease-in-out;
 }
 
-.subject-list {
-  display: flex;
-  flex-wrap: wrap;
+.student-dashboard h2 {
+  font-size: 30px;
+  color: #1a2e35;
+  text-align: center;
+  margin-bottom: 30px;
+  font-family: 'Poppins', sans-serif;
 }
 
-.subject-button {
-  margin: 10px;
-  padding: 10px 20px;
+/* Button Styles */
+.subject-button,
+.chapter-button,
+.back-button {
+  background-color: #1cbbb4; /* Primary Teal */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
   font-size: 16px;
   cursor: pointer;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin: 8px;
 }
 
-.subject-button:hover {
-  background-color: #0056b3;
+.subject-button:hover,
+.chapter-button:hover,
+.back-button:hover {
+  background-color: #179a91; /* Darker Teal */
+  transform: translateY(-3px);
 }
 
-.logout-button {
-  background-color: #dc3545;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.subject-button:active,
+.chapter-button:active,
+.back-button:active {
+  background-color: #1cbbb4; /* Primary Teal */
+  transform: translateY(1px);
 }
 
-.logout-button:hover {
-  background-color: #c82333;
+/* Responsive Design */
+@media (max-width: 768px) {
+  .student-dashboard h2 {
+    font-size: 24px;
+  }
+  
+  .subject-button,
+  .chapter-button,
+  .back-button {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

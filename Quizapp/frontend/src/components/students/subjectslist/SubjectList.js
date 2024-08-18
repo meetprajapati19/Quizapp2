@@ -6,18 +6,17 @@ const SubjectList = ({ subjects, onSelectSubject }) => {
   const navigate = useNavigate();
 
   const handleSubjectClick = (subject) => {
-   
     navigate(`/studentdash/${subject}`);
   };
 
   return (
-    <div className="subject-list">
+    <div className="subject-container">
       <h3>Available Subjects</h3>
       {subjects.map((subject) => (
         <button
           key={subject}
           onClick={() => handleSubjectClick(subject)}
-          className="subject-button"
+          className="subject-item-button"
         >
           {subject}
         </button>

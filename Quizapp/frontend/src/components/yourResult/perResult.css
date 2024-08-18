@@ -1,30 +1,92 @@
-.results-component {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
+/* StudentQuizResults.css */
+
+.results-container {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  margin: 20px auto;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.results-container h3 {
+  font-size: 28px;
+  color: #1a2e35;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.result-card {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.result-card h4 {
+  font-size: 22px;
+  color: #1a2e35;
+  margin-bottom: 10px;
+}
+
+.result-card h5 {
+  font-size: 18px;
+  color: #1cbbb4;
+  margin-bottom: 15px;
+}
+
+.result-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.result-card li {
+  background-color: #e0f7f9;
+  border: 1px solid #b2ebf2;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.result-card li p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.no-results {
+  text-align: center;
+  font-size: 18px;
+  color: #ff4f5a;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .results-container h3 {
+    font-size: 24px;
   }
-  
-  .results-component h3 {
-    text-align: center;
+
+  .result-card h4 {
+    font-size: 20px;
   }
-  
-  .results-component p {
+
+  .result-card h5 {
     font-size: 16px;
-    margin: 10px 0;
   }
-  
-  .results-component ul {
-    list-style-type: none;
-    padding: 0;
+
+  .result-card li p {
+    font-size: 14px;
   }
-  
-  .results-component li {
-    background-color: #fff;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  
+  to {
+    opacity: 1;
+  }
+}
